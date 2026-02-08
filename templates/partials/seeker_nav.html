@@ -1,0 +1,94 @@
+<style>
+    .seeker-navbar {
+        background-color: #1e3a8a;
+    }
+
+    .seeker-navbar .navbar-brand,
+    .seeker-navbar .nav-link {
+        color: #fff !important;
+        font-weight: 500;
+    }
+
+    .seeker-navbar .nav-link:hover {
+        text-decoration: underline;
+    }
+
+    .verify-badge {
+        background: #16a34a;
+        color: white;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        margin-left: 6px;
+    }
+    html {
+    overflow-y: scroll;
+}
+
+</style>
+
+<nav class="navbar navbar-expand-lg seeker-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'seeker_dashboard' %}">
+            JobPortal
+        </a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#seekerNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="seekerNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'seeker_dashboard' %}">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'seeker_profile' %}">
+                        Profile
+                        <!-- {% if request.user.is_verified %}
+                            <span class="verify-badge">✔</span>
+                        {% endif %} -->
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'applied_jobs' %}">
+                        Applied Jobs
+                    </a>
+                </li>
+
+                <!-- 🔔 NOTIFICATIONS -->
+                <li class="nav-item">
+<a class="nav-link" href="{% url 'seeker_notifications' %}">
+    Notifications
+    {% if seeker_notification_count > 0 %}
+        <span class="badge bg-danger ms-1">
+            {{ seeker_notification_count }}
+        </span>
+    {% endif %}
+</a>
+
+
+
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'logout_view' %}"
+                       onclick="return confirm('Logout?');">
+                        Logout
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>

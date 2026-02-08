@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Applicants | Employer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #f0f4ff, #ffffff);
+        }
+        .card {
+            border-radius: 14px;
+            border: none;
+        }
+        .card-header {
+            background-color: #1e3a8a;
+            color: white;
+            border-radius: 14px 14px 0 0;
+        }
+        .status-applied { background: #64748b; }
+        .status-viewed { background: #0ea5e9; }
+        .status-profile-visited { 
+            background: #f59e0b !important; 
+            color: white !important; 
+        }
+        .status-accepted { 
+            background: #16a34a !important; 
+            color: white !important; 
+        }
+        .status-rejected { background: #dc2626; }
+        .navbar-toggler {
+            width: auto !important;
+            padding: .25rem .75rem !important;
+        }
+    </style>
+</head>
+
+<body>
+{% include 'partials/employer_nav.html' %}
+
+<div class="employer-content">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card shadow">
+        <div class="card-header">
+            <h5 class="mb-0">
+                Applicants for "{{ job.designation }}"
+            </h5>
+        </div>
+
+        <div class="card-body">
+            {% if applications %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle text-center mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Seeker</th>
+                            <th>Email</th>
+                            <th>Resume</th>
+                            <th>Status</th>
+                            <th>Update Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for app in applications %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                     <td>
+    <a href="{% url 'seeker_profile_detail' app.seeker.user.id %}?app_id={{ app.id }}"
+       class="text-decoration-none fw-bold text-dark">
+        {{ app.seeker.user.first_name }} {{ app.seeker.user.last_name|default:"" }}
+    </a>
+</td>
+                            <td>{{ app.seeker.user.email }}</td>
+                            <td>
+                                {% if app.seeker.resume %}
+                                    <a href="{{ app.seeker.resume.url }}"
+                                       target="_blank"
+                                       class="btn btn-sm btn-outline-primary">
+                                        View Resume
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">—</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge
+                                    {% if app.status == 'Applied' %}status-applied
+                                    {% elif app.status == 'Viewed' %}status-viewed
+                                    {% elif app.status == 'Profile Visited' %}status-profile-visited
+                                    {% elif app.status == 'Accepted' %}status-accepted
+                                    {% elif app.status == 'Rejected' %}status-rejected
+                                    {% endif %}">
+                                    {{ app.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <form method="post"
+                                      action="{% url 'update_application_status' app.id %}">
+                                    {% csrf_token %}
+                                    <div class="d-flex gap-2">
+                                        <select name="status"
+                                                class="form-select form-select-sm">
+                                            {% if app.status != 'Accepted' %}
+                                                <option value="Viewed" {% if app.status == 'Viewed' %}selected{% endif %}>Viewed</option>
+                                                <option value="Profile Visited" {% if app.status == 'Profile Visited' %}selected{% endif %}>Profile Visited</option>
+                                                <option value="Accepted" {% if app.status == 'Accepted' %}selected{% endif %}>Accepted</option>
+                                                <option value="Rejected" {% if app.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                                            {% else %}
+                                                <option value="Accepted" selected>✅ Accepted (Permanent)</option>
+                                            {% endif %}
+                                        </select>
+                                        {% if app.status != 'Accepted' %}
+                                            <button class="btn btn-success btn-sm">
+                                                Update
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <div class="alert alert-info text-center">
+                    No applicants yet.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

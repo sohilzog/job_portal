@@ -1,0 +1,57 @@
+<style>
+/* ==============================
+   FOOTER (NOT FIXED)
+   ============================== */
+.seeker-footer {
+    background-color: #1e3a8a;
+    color: #ffffff;
+    padding: 15px 0;
+    margin-top: auto;   /* 🔥 THIS IS THE KEY */
+}
+
+/* Footer links */
+.seeker-footer a {
+    color: #dbeafe;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0 10px;
+}
+
+.seeker-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Footer text */
+.seeker-footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .seeker-footer {
+        text-align: center;
+        padding: 18px 10px;
+    }
+}
+</style>
+
+
+
+<footer class="seeker-footer">
+    <div class="container text-center">
+        <div class="row align-items-center">
+
+            <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
+                © {{ now|date:"Y" }} JobPortal. All rights reserved.
+            </div>
+
+            <div class="col-md-6 text-md-end text-center">
+                <a href="#">About</a> |
+                <a href="#">Jobs</a> |
+                <a href="#">Support</a>
+            </div>
+
+        </div>
+    </div>
+</footer>

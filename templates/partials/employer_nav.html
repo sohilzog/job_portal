@@ -1,0 +1,125 @@
+<style>
+/* ================= SIDEBAR ================= */
+
+.employer-sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #1e3a8a;
+    padding-top: 20px;
+    transition: left 0.3s ease;
+    z-index: 1050;
+}
+
+.employer-sidebar h5 {
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.employer-sidebar a {
+    display: block;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.employer-sidebar a:hover {
+    background-color: #1e40af;
+}
+
+/* ================= CONTENT ================= */
+
+.employer-content {
+    margin-left: 250px;
+    padding: 30px;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 991px) {
+    .employer-sidebar {
+        left: -250px;
+    }
+
+    .employer-sidebar.active {
+        left: 0;
+    }
+
+    .employer-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        z-index: 1040;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+}
+
+/* ================= VERIFY BADGE ================= */
+
+.verify-badge {
+    background: #16a34a;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+</style>
+
+<!-- MOBILE TOP BAR -->
+<div class="d-lg-none bg-white shadow-sm p-2 d-flex align-items-center">
+    <button class="btn btn-outline-primary me-2"
+            onclick="toggleSidebar()">
+        ☰
+    </button>
+    <strong>Employer Panel</strong>
+</div>
+
+<!-- SIDEBAR -->
+<div class="employer-sidebar">
+    <h5>Employer Panel</h5>
+
+    <a href="{% url 'employerdash' %}">Dashboard</a>
+    <a href="{% url 'post_job' %}">Post Job</a>
+    <a href="{% url 'my_jobs' %}">My Jobs</a>
+
+    <a href="{% url 'employer_notifications' %}">
+        Notifications
+        {% if employer_notification_count > 0 %}
+            <span class="badge bg-danger ms-2">
+                {{ employer_notification_count }}
+            </span>
+        {% endif %}
+    </a>
+
+    <a href="{% url 'employer_account' %}">Account</a>
+
+    <a href="{% url 'logout_view' %}"
+       onclick="return confirm('Are you sure you want to logout?');">
+        Logout
+    </a>
+</div>
+
+<!-- OVERLAY -->
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<!-- TOGGLE SCRIPT -->
+<script>
+function toggleSidebar() {
+    document.querySelector('.employer-sidebar').classList.toggle('active');
+    document.querySelector('.sidebar-overlay').classList.toggle('active');
+}
+</script>

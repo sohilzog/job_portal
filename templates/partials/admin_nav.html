@@ -1,0 +1,126 @@
+<!-- ADMIN SIDEBAR + RESPONSIVE FIX -->
+<style>
+    body {
+        overflow-x: hidden;
+    }
+
+    /* Sidebar */
+    .admin-sidebar {
+        height: 100vh;
+        background-color: #1e3a8a;
+        padding-top: 20px;
+        position: fixed;
+        width: 250px;
+        top: 0;
+        left: 0;
+        transition: transform 0.3s ease;
+        z-index: 1050;
+    }
+
+    .admin-sidebar h5 {
+        color: #fff;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    .admin-sidebar a {
+        display: block;
+        padding: 12px 20px;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .admin-sidebar a:hover {
+        background-color: #1e40af;
+    }
+
+    /* Content */
+    .admin-content {
+        margin-left: 250px;
+        padding: 30px;
+        transition: margin-left 0.3s ease;
+    }
+
+    /* Top bar (mobile only) */
+    .admin-topbar {
+        display: none;
+        background-color: #1e3a8a;
+        color: white;
+        padding: 10px 15px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1100;
+    }
+
+    .admin-topbar button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    /* Mobile */
+    @media (max-width: 991px) {
+        .admin-sidebar {
+            transform: translateX(-100%);
+        }
+
+        .admin-sidebar.show {
+            transform: translateX(0);
+        }
+
+        .admin-content {
+            margin-left: 0;
+            padding: 80px 15px 20px;
+        }
+
+        .admin-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+</style>
+
+<!-- MOBILE TOP BAR -->
+<div class="admin-topbar">
+    <button onclick="toggleAdminSidebar()">☰</button>
+    <span class="fw-semibold">Admin Panel</span>
+</div>
+
+<!-- SIDEBAR -->
+<div class="admin-sidebar" id="adminSidebar">
+    <h5>Admin Panel</h5>
+
+    <a href="{% url 'admindash' %}">Dashboard</a>
+    <a href="{% url 'approve_disapprove' %}">Approve Users</a>
+    <a href="{% url 'view_employers' %}">View Employers</a>
+    <a href="{% url 'view_seekers' %}">View Seekers</a>
+    <a href="{% url 'admin_jobs' %}">Verify Jobs</a>
+    <a href="{% url 'admin_account' %}">Profile</a>
+
+    <a href="{% url 'admin_notifications' %}">
+    Notifications
+    {% if admin_notification_count > 0 %}
+        <span class="badge bg-danger ms-2">
+            {{ admin_notification_count }}
+        </span>
+    {% endif %}
+</a>
+
+
+    <a href="{% url 'logout_view' %}"
+       onclick="return confirm('Logout?');">
+        Logout
+    </a>
+</div>
+
+<script>
+    function toggleAdminSidebar() {
+        document.getElementById("adminSidebar")
+                .classList.toggle("show");
+    }
+</script>
